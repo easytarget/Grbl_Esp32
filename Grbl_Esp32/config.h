@@ -62,13 +62,13 @@ Some features should not be changed. See notes below.
 // NOTE: Defaults are set for a traditional 3-axis CNC machine. Z-axis first to clear, followed by X & Y.
 // These homing cycle definitions precede the machine.h file so that the machine
 // definition can undefine them if necessary.
-#define HOMING_CYCLE_0 bit(Z_AXIS)	// TYPICALLY REQUIRED: First move Z to clear workspace.
-#define HOMING_CYCLE_1 bit(X_AXIS)
-#define HOMING_CYCLE_2 bit(Y_AXIS)
+//#define HOMING_CYCLE_0 bit(Z_AXIS)	// TYPICALLY REQUIRED: First move Z to clear workspace.
+//#define HOMING_CYCLE_1 bit(X_AXIS)
+//#define HOMING_CYCLE_2 bit(Y_AXIS)
 
 // NOTE: The following is for for homing X and Y at the same time
-// #define HOMING_CYCLE_0 bit(Z_AXIS) // first home z by itself
-// #define HOMING_CYCLE_1 (bit(X_AXIS)|bit(Y_AXIS))  // Homes both X-Y in one cycle. NOT COMPATIBLE WITH COREXY!!!
+#define HOMING_CYCLE_0 bit(Z_AXIS) // first home z by itself
+#define HOMING_CYCLE_1 (bit(X_AXIS)|bit(Y_AXIS))  // Homes both X-Y in one cycle. NOT COMPATIBLE WITH COREXY!!!
 
 // Inverts pin logic of the control command pins based on a mask. This essentially means you can use
 // normally-closed switches on the specified pins, rather than the default normally-open switches.
@@ -353,7 +353,7 @@ Some features should not be changed. See notes below.
 // allowable override values and the coarse and fine increments per command received. Please
 // note the allowable values in the descriptions following each define.
 #define DEFAULT_FEED_OVERRIDE           100 // 100%. Don't change this value.
-#define MAX_FEED_RATE_OVERRIDE          200 // Percent of programmed feed rate (100-255). Usually 120% or 200%
+#define MAX_FEED_RATE_OVERRIDE          250 // Percent of programmed feed rate (100-255). Usually 120% or 200%
 #define MIN_FEED_RATE_OVERRIDE           10 // Percent of programmed feed rate (1-100). Usually 50% or 1%
 #define FEED_OVERRIDE_COARSE_INCREMENT   10 // (1-99). Usually 10%.
 #define FEED_OVERRIDE_FINE_INCREMENT      1 // (1-99). Usually 1%.
@@ -364,7 +364,7 @@ Some features should not be changed. See notes below.
 // #define RAPID_OVERRIDE_EXTRA_LOW 5 // *NOT SUPPORTED* Percent of rapid (1-99). Usually 5%.
 
 #define DEFAULT_SPINDLE_SPEED_OVERRIDE    100 // 100%. Don't change this value.
-#define MAX_SPINDLE_SPEED_OVERRIDE        200 // Percent of programmed spindle speed (100-255). Usually 200%.
+#define MAX_SPINDLE_SPEED_OVERRIDE        250 // Percent of programmed spindle speed (100-255). Usually 200%.
 #define MIN_SPINDLE_SPEED_OVERRIDE         10 // Percent of programmed spindle speed (1-100). Usually 10%.
 #define SPINDLE_OVERRIDE_COARSE_INCREMENT  10 // (1-99). Usually 10%.
 #define SPINDLE_OVERRIDE_FINE_INCREMENT     1 // (1-99). Usually 1%.
@@ -526,12 +526,12 @@ Some features should not be changed. See notes below.
 // must use #define USE_RMT_STEPS for this to work
 //#define STEP_PULSE_DELAY 10 // Step pulse delay in microseconds. Default disabled.
 
-// The number of linear motions in the planner buffer to be planned at any give time. The vast
+// The number of linear motions in the planner to be planned at any give time. The vast
 // majority of RAM that Grbl uses is based on this buffer size. Only increase if there is extra
 // available RAM, like when re-compiling for a Mega2560. Or decrease if the Arduino begins to
 // crash due to the lack of available RAM or if the CPU is having trouble keeping up with planning
 // new incoming motions as they are executed.
-// #define BLOCK_BUFFER_SIZE 16 // Uncomment to override default in planner.h.
+#define BLOCK_BUFFER_SIZE 32 // Uncomment to override default in planner.h.
 
 // Governs the size of the intermediary step segment buffer between the step execution algorithm
 // and the planner blocks. Each segment is set of steps executed at a constant velocity over a
@@ -539,7 +539,7 @@ Some features should not be changed. See notes below.
 // block velocity profile is traced exactly. The size of this buffer governs how much step
 // execution lead time there is for other Grbl processes have to compute and do their thing
 // before having to come back and refill this buffer, currently at ~50msec of step moves.
-// #define SEGMENT_BUFFER_SIZE 6 // Uncomment to override default in stepper.h.
+#define SEGMENT_BUFFER_SIZE 12 // Uncomment to override default in stepper.h.
 
 // Line buffer size from the serial input stream to be executed. Also, governs the size of
 // each of the startup blocks, as they are each stored as a string of this size. Make sure
@@ -561,8 +561,8 @@ Some features should not be changed. See notes below.
 // 115200 baud will take 5 msec to transmit a typical 55 character report. Worst case reports are
 // around 90-100 characters. As long as the serial TX buffer doesn't get continually maxed, Grbl
 // will continue operating efficiently. Size the TX buffer around the size of a worst-case report.
-// #define RX_BUFFER_SIZE 128 // (1-254) Uncomment to override defaults in serial.h
-// #define TX_BUFFER_SIZE 100 // (1-254)
+#define RX_BUFFER_SIZE 254 // (1-254) Uncomment to override defaults in serial.h
+#define TX_BUFFER_SIZE 254 // (1-254)
 
 // A simple software debouncing feature for hard limit switches. When enabled, the limit
 // switch interrupt unblock a waiting task which will recheck the limit switch pins after
@@ -614,7 +614,7 @@ Some features should not be changed. See notes below.
 // Some senders may not be able to parse anything different from the original set
 // You can still set these like $33=5000, but you cannot read them back.
 // Default is off to limit support issues...you can enable here or in your machine definition file
-// #define SHOW_EXTENDED_SETTINGS
+#define SHOW_EXTENDED_SETTINGS
 
 // Enable the '$I=(string)' build info write command. If disabled, any existing build info data must
 // be placed into EEPROM via external means with a valid checksum value. This macro option is useful
