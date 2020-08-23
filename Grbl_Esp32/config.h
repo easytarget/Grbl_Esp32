@@ -275,7 +275,7 @@ Some features should not be changed. See notes below.
 
 // Allows GRBL to track and report gcode line numbers.  Enabling this means that the planning buffer
 // goes from 16 to 15 to make room for the additional line number data in the plan_block_t struct
-// #define USE_LINE_NUMBERS // Disabled by default. Uncomment to enable.
+#define USE_LINE_NUMBERS // Disabled by default. Uncomment to enable.
 
 // Upon a successful probe cycle, this option provides immediately feedback of the probe coordinates
 // through an automatically generated message. If disabled, users can still access the last probe
@@ -526,12 +526,12 @@ Some features should not be changed. See notes below.
 // must use #define USE_RMT_STEPS for this to work
 //#define STEP_PULSE_DELAY 10 // Step pulse delay in microseconds. Default disabled.
 
-// The number of linear motions in the planner to be planned at any give time. The vast
+// The number of linear motions in the planner buffer to be planned at any give time. The vast
 // majority of RAM that Grbl uses is based on this buffer size. Only increase if there is extra
 // available RAM, like when re-compiling for a Mega2560. Or decrease if the Arduino begins to
 // crash due to the lack of available RAM or if the CPU is having trouble keeping up with planning
 // new incoming motions as they are executed.
-#define BLOCK_BUFFER_SIZE 32 // Uncomment to override default in planner.h.
+#define BLOCK_BUFFER_SIZE 64 // Uncomment to override default in planner.h.
 
 // Governs the size of the intermediary step segment buffer between the step execution algorithm
 // and the planner blocks. Each segment is set of steps executed at a constant velocity over a
@@ -561,8 +561,8 @@ Some features should not be changed. See notes below.
 // 115200 baud will take 5 msec to transmit a typical 55 character report. Worst case reports are
 // around 90-100 characters. As long as the serial TX buffer doesn't get continually maxed, Grbl
 // will continue operating efficiently. Size the TX buffer around the size of a worst-case report.
-#define RX_BUFFER_SIZE 254 // (1-254) Uncomment to override defaults in serial.h
-#define TX_BUFFER_SIZE 254 // (1-254)
+// #define RX_BUFFER_SIZE 128 // (1-254) Uncomment to override defaults in serial.h
+// #define TX_BUFFER_SIZE 100 // (1-254)
 
 // A simple software debouncing feature for hard limit switches. When enabled, the limit
 // switch interrupt unblock a waiting task which will recheck the limit switch pins after
